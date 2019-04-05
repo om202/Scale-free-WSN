@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Created on Wed Apr  3 11:13:54 2019
+
+@author: omprakash
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
 Created on Mon Mar 25 16:15:51 2019
 
 @author: omprakash
@@ -16,8 +24,8 @@ import operator
 
 nodes = [] #nodes list 
 D = 500 #max size of WSN deployment area
-N = 1000 #number of Nodes
-R = 10 #Radius of transmission 
+N = 500 #number of Nodes
+R = 150 #Radius of transmission 
 
 #function to sort values in the nodes
 def sorti(n):
@@ -64,7 +72,7 @@ def generateGraph0():
     pos = nx.get_node_attributes(G,'pos')
     nx.draw(G,pos,node_size=8,node_color='g')
     plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
-    plt.show()
+    #plt.show()
     return G
 
 def generateGraphRand():
@@ -77,10 +85,10 @@ def generateGraphRand():
         b = tuple(rnd.choice(nodes))
         G.add_edge(a,b)
         j = j+1
-    pos = nx.get_node_attributes(G,'pos')
+    '''pos = nx.get_node_attributes(G,'pos')
     nx.draw(G,pos,node_size=8,node_color='g')
     plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
-    plt.show()
+    plt.show()'''
     return G
 
 def degreeHistogram(G,clr):
@@ -136,8 +144,8 @@ def perMapRange(permap):
 
 def prefAttachment(G,seed,data):   
     for ii in range(0,D):
-        permap = perMap(G)
-        nbrs_seed = data[tuple(seed)]
+        permap = perMap(G) #prob map of each node wrt whole graph
+        nbrs_seed = data[tuple(seed)] #nbrs of the seed node
         new_permap = {}
         for i in nbrs_seed:
             new_permap[tuple(i)] = permap[tuple(i)]
@@ -152,32 +160,33 @@ def prefAttachment(G,seed,data):
         for keys in new_permap:
             permap_mapped[keys] = (new_permap[keys]/_sum)
         
-        
-        flag0 = 0
+        count0 = 0
+        keys_0 = []
+        count1 = 0
         for keys in permap_mapped:
-            count0 = 0
-            keys_0 = []
-            count1 = 0
             if permap_mapped[keys]==0:
                 count0 = count0+1
                 keys_0.append(keys)
             else:
                 count1 = count1 + 1
-            if count0 < count1:
-                flag0 = 1
         
-        if flag0==1:
+        #print('count0 {} count1 {}'.format(count0,count1))
+        
+        if count1>count0:
             new_permaprange = perMapRange(permap_mapped)
-                select = rnd.randint(0,100)/100
-                for keys in new_permaprange:
-                    t = new_permaprange[keys]
-                    if select>=t[0] and select<=t[1]:
-                        G.add_edge(tuple(seed),keys)
+            #print(new_permaprange)
+            select = rnd.uniform(0,1)
+            for keys in new_permaprange:
+                t = new_permaprange[keys]
+                if select>=t[0] and select<=t[1]:
+                    print('Seed: {} --> Key: {} \n'.format(seed,keys))
+                    G.add_edge(tuple(seed),keys)
         else:
-            G.add_edge(tuple(rnd.choice(keys_0)), tuple(seed))
-            #G.add_edge(tuple(rnd.choice(nbrs_seed)), tuple(seed))
+            rnd_nbr = tuple(rnd.choice(keys_0))
+            G.add_edge(rnd_nbr, tuple(seed))
+            print('Seed: {} --> rnd_nbr: {} \n'.format(seed,rnd_nbr))
+            #print('EXEC')
         seed = rnd.choice(nbrs_seed)
-        #seed = keys
     return G
 
 ##########################
@@ -199,7 +208,7 @@ G = prefAttachment(G,seed,nodePair)
 
 d=dict(nx.degree(G))
 pos = nx.get_node_attributes(G,'pos')
-nx.draw(G,pos,node_size=5,node_color='r')
+nx.draw(G,pos,node_size=2,node_color='r',with_labels=True)
 plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
 plt.show()
 degreeHistogram(G,'r')
