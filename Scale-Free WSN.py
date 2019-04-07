@@ -1,4 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr  7 17:47:48 2019
 
+@author: omprakash
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  5 11:09:43 2019
+
+@author: omprakash
+"""
 
 #Imported Packages
 #import numpy as np
@@ -12,6 +26,10 @@ nodes = [] #nodes list
 D = 500 #max size of WSN deployment area
 N = 300 #number of Nodes
 R =  200 #Radius of transmission 
+HD = 100 #highest degree
+PTE = 0.02 #percentage of total edges 
+RB = 0.04 #Random break of nodes 
+m = 3 #links with each new node
 
 #function to sort values in the nodes
 def sorti(n):
@@ -61,30 +79,33 @@ def generateGraph0():
     #plt.show()
     return G
 
-def generateGraphRand():
-    G = nx.Graph()
-    for i in nodes:
-        G.add_node(tuple(i),pos=i)
-    j=0
-    while(j<int(0.5*N)):
-        a = tuple(rnd.choice(nodes))
-        b = tuple(rnd.choice(nodes))
-        G.add_edge(a,b)
-        j = j+1
-    '''pos = nx.get_node_attributes(G,'pos')
-    nx.draw(G,pos,node_size=8,node_color='g')
-    plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
-    plt.show()'''
+def randomBreak(G):
+    removed = []
+    for i in range(0,int(RB*N)):
+        x = tuple(rnd.choice(nodes))
+        if x not in removed:
+            removed.append(x)
+            G.remove_node(x)
+        else:
+            i = i-1
+    print(len(removed))
     return G
 
 def degreeLoglog(G,clr):
-    degree_sequence = sorted([d for n, d in G.degree()], reverse=True)
-    degreeCount = collections.Counter(degree_sequence)
-    deg, cnt = zip(*degreeCount.items())
-    #plt.bar(deg, cnt, width=0.80, color=clr)
-    plt.loglog(deg,cnt, marker='o', linestyle='-', linewidth=1, markersize=6)
+    d = nx.degree(G)
+    degr = []
+    for i in d:
+        degr.append(i[1])
+    s = 0
+    for i in d:
+        s = s + i[1]
+    sel = []
+    for i in d:
+        sel.append(i[1]/s)
+        
+    plt.loglog(degr,sel, marker='o', linestyle='-', linewidth=1, markersize=6)
     plt.title("Loglog Plot")
-    plt.ylabel("Count")
+    plt.ylabel("P(k)")
     plt.xlabel("Degree")
     plt.show()
 
@@ -111,7 +132,10 @@ def perMap(G):
     if sum == 0:
         sum = 0.000000001
     for i in temp:
-        per.append(i[1]/sum)
+        if i[1] < HD:
+            per.append(i[1]/sum)
+        else:
+            per.append(i[1]/(sum*i[1]))
     for i,j in zip(temp,per):
         permap[i[0]]=j
     return permap
@@ -141,7 +165,7 @@ def perMapRange(permap):
     return permaprange
 
 def prefAttachment(G,seed,data):   
-    for ii in range(0,int(((N*(N-1))/2)*0.01)):
+    for ii in range(0,int(((N*(N-1))/2)*PTE)):
         permap = perMap(G) #prob map of each node wrt whole graph
         nbrs_seed = data[tuple(seed)] #nbrs of the seed node
         new_permap = {}
@@ -163,17 +187,19 @@ def prefAttachment(G,seed,data):
             _sum = _sum + permap_mapped[keys]
         
         if _sum == 0:
-            rnd_nbr = tuple(rnd.choice(nbrs_seed))
-            G.add_edge(rnd_nbr, tuple(seed))
+            for jj in range(0,m):
+                rnd_nbr = tuple(rnd.choice(nbrs_seed))
+                G.add_edge(rnd_nbr, tuple(seed))
             #print('Seed: {} --> rnd_nbr: {} \n'.format(seed,rnd_nbr))
         else:
             new_permaprange = perMapRange(permap_mapped)
-            select = rnd.uniform(0,1)
-            for keys in new_permaprange:
-                t = new_permaprange[keys]
-                if select>=t[0] and select<=t[1]:
-                    #print('Seed: {} --> Key: {} \n'.format(seed,keys))
-                    G.add_edge(tuple(seed),keys)
+            for jj in range(0,m):
+                select = rnd.uniform(0,1)
+                for keys in new_permaprange:
+                    t = new_permaprange[keys]
+                    if select>=t[0] and select<=t[1]:
+                        #print('Seed: {} --> Key: {} \n'.format(seed,keys))
+                        G.add_edge(tuple(seed),keys)
 
         seed = rnd.choice(nbrs_seed)
     
@@ -191,7 +217,47 @@ def prefAttachment(G,seed,data):
             if G.degree(rnd_nbr_i)!=0:
                 G.add_edge(rnd_nbr_i,tuple(i))
                 flag = 1  
+    
+    permap = perMap(G) #prob map of each node wrt whole graph
+    #print(permap)
     return G
+
+def findHubs(d):
+    deg = []
+    for i in d:
+        deg.append(d[i])
+    
+    deg.sort()
+    
+    h = []
+    for i in deg:
+        if i>(deg[-1]/2):
+            h.append(i)
+    
+    hub = []
+    for i in h:
+        for j in d:
+            if i == d[j]:
+                hub.append(j)
+    return hub
+
+def showGraph(G):
+    d=dict(nx.degree(G))
+
+    hub = findHubs(d)
+    
+    node_color = []
+    for node in G:
+        if node in hub:
+            node_color.append('red')
+        else:
+            node_color.append('brown')
+    
+    
+    pos = nx.get_node_attributes(G,'pos')
+    nx.draw(G,pos,node_size=[v*10 for v in d.values()],node_color=node_color)
+    plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
+    plt.show()
 
 ##########################
 generateNode() #Calling function to generate nodes
@@ -210,13 +276,16 @@ seed = rnd.choice(center)
 
 G = prefAttachment(G,seed,nodePair)
 
-d=dict(nx.degree(G))
-pos = nx.get_node_attributes(G,'pos')
-nx.draw(G,pos,node_size=[v*10 for v in d.values()],node_color='r')
-plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
-plt.show()
+showGraph(G)
+
 degreeHistogram(G,'brown')
 degreeLoglog(G,'g')
 print(nx.average_shortest_path_length(G))
 
+Gd = randomBreak(G)
 
+showGraph(Gd)
+
+degreeHistogram(Gd,'violet')
+degreeLoglog(Gd,'violet')
+print(nx.average_shortest_path_length(Gd))
