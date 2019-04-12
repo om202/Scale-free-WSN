@@ -26,10 +26,10 @@ nodes = [] #nodes list
 D = 500 #max size of WSN deployment area
 N = 300 #number of Nodes
 R =  200 #Radius of transmission 
-HD = 100 #highest degree
-PTE = 0.02 #percentage of total edges 
-RB = 0.04 #Random break of nodes 
-m = 3 #links with each new node
+HD = 50 #highest degree
+PTE = 0.001 #percentage of total edges 
+#RB = 0.04 #Random break of nodes 
+m = 2 #links with each new node
 
 #function to sort values in the nodes
 def sorti(n):
@@ -79,17 +79,17 @@ def generateGraph0():
     #plt.show()
     return G
 
-def randomBreak(G):
-    removed = []
-    for i in range(0,int(RB*N)):
-        x = tuple(rnd.choice(nodes))
-        if x not in removed:
-            removed.append(x)
-            G.remove_node(x)
-        else:
-            i = i-1
-    print(len(removed))
-    return G
+def randomBreak(G,RB):
+    GC = G.copy()
+    nodes = list(GC.nodes())
+    i = 0
+    while i<RB:
+        x = tuple(rnd.choice(nodes)) 
+        GC.remove_node(x)
+        nodes.remove(x)
+        i = i + 1
+    #print('Number of nodes removed: {}'.format(i))
+    return GC
 
 def degreeLoglog(G,clr):
     d = nx.degree(G)
@@ -279,13 +279,36 @@ G = prefAttachment(G,seed,nodePair)
 showGraph(G)
 
 degreeHistogram(G,'brown')
-degreeLoglog(G,'g')
-print(nx.average_shortest_path_length(G))
+#degreeLoglog(G,'g')
+#print(nx.average_shortest_path_length(G))
 
-Gd = randomBreak(G)
+#Robustness Analysis
+breaks = 0
+actual_nodes = N
+nodes_mcc = 2
+br = []
+an = []
+nmcc = []
+while breaks<N and nodes_mcc>1:
+    #print('Breaks: {}'.format(breaks))
+    Gd = randomBreak(G,breaks)
+    #maximal connected component
+    MCC = max(nx.connected_component_subgraphs(Gd), key=len)
+    nodes_mcc = len(MCC)
+    #print('number of nodes in MCC {}'.format(nodes_mcc))
+    breaks = breaks + 2
+    actual_nodes = actual_nodes - breaks
+    an.append(actual_nodes)
+    br.append(breaks)
+    nmcc.append(nodes_mcc)
 
-showGraph(Gd)
-
-degreeHistogram(Gd,'violet')
-degreeLoglog(Gd,'violet')
-print(nx.average_shortest_path_length(Gd))
+plt.plot(br,nmcc,'g')
+plt.title('Robustness of Algorithm')
+plt.xlabel('Number of Random Breaks')
+plt.ylabel('Number of nodes in MCC')
+plt.show()
+    
+    #showGraph(MCC)
+    #degreeHistogram(MCC,'violet')
+    #degreeLoglog(MCC,'violet')
+    #print(nx.average_shortest_path_length(Gd))
