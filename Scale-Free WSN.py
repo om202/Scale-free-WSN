@@ -24,10 +24,10 @@ import operator
 
 nodes = [] #nodes list 
 D = 500 #max size of WSN deployment area
-N = 300 #number of Nodes
+N = 100 #number of Nodes
 R =  200 #Radius of transmission 
 HD = 50 #highest degree
-PTE = 0.001 #percentage of total edges 
+PTE = 0.01 #percentage of total edges 
 #RB = 0.04 #Random break of nodes 
 m = 2 #links with each new node
 
@@ -296,13 +296,24 @@ while breaks<N and nodes_mcc>1:
     MCC = max(nx.connected_component_subgraphs(Gd), key=len)
     nodes_mcc = len(MCC)
     #print('number of nodes in MCC {}'.format(nodes_mcc))
-    breaks = breaks + 2
+    breaks = breaks + 1
     actual_nodes = actual_nodes - breaks
     an.append(actual_nodes)
     br.append(breaks)
     nmcc.append(nodes_mcc)
 
+print(nmcc)
+
+diag = []
+d = 0
+while d<=N:
+    diag.append(d)
+    d = d + 1 
+
 plt.plot(br,nmcc,'g')
+diag_rev = diag.copy()
+diag_rev.reverse()
+#plt.plot(diag,diag_rev,'y')
 plt.title('Robustness of Algorithm')
 plt.xlabel('Number of Random Breaks')
 plt.ylabel('Number of nodes in MCC')
