@@ -24,12 +24,12 @@ import operator
 
 nodes = [] #nodes list 
 D = 500 #max size of WSN deployment area
-N = 100 #number of Nodes
+N = 800 #number of Nodes
 R =  200 #Radius of transmission 
-HD = 50 #highest degree
+HD = 100 #highest degree
 PTE = 0.01 #percentage of total edges 
 #RB = 0.04 #Random break of nodes 
-m = 2 #links with each new node
+m = 1 #links with each new node
 
 #function to sort values in the nodes
 def sorti(n):
@@ -79,8 +79,19 @@ def generateGraph0():
     #plt.show()
     return G
 
-def randomBreak(G,RB):
+def randomBreak_v1(G,RB):
     GC = G.copy()
+    nodes = list(GC.nodes())
+    i = 0
+    while i<RB:
+        x = tuple(rnd.choice(nodes)) 
+        GC.remove_node(x)
+        nodes.remove(x)
+        i = i + 1
+    #print('Number of nodes removed: {}'.format(i))
+    return GC
+
+def randomBreak_v2(GC,RB):
     nodes = list(GC.nodes())
     i = 0
     while i<RB:
@@ -256,7 +267,8 @@ def showGraph(G):
     
     pos = nx.get_node_attributes(G,'pos')
     nx.draw(G,pos,node_size=[v*10 for v in d.values()],node_color=node_color)
-    plt.title("WSN with edges to all neighbours: Area {} X {}".format(D,D))
+    plt.title("Scale Free WSN: Area {} X {}, Nodes: {}".format(D,D,N))
+    plt.ylabel('Hubs: Red, Other: Brown')
     plt.show()
 
 ##########################
@@ -266,8 +278,8 @@ G = generateGraph0() #Calling function to generate graph
 
 #Choosing a center element
 pos = nx.get_node_attributes(G,'pos')
-r1 = D*0.4
-r2 = D*0.5
+r1 = D*0.35
+r2 = D*0.55
 center = []
 for keys in pos:
     if keys[0]>r1 and keys[0]<r2 and keys[1]>r1 and keys[1]<r2:
@@ -282,44 +294,48 @@ degreeHistogram(G,'brown')
 #degreeLoglog(G,'g')
 #print(nx.average_shortest_path_length(G))
 
+
 #Robustness Analysis
-breaks = 0
-actual_nodes = N
-nodes_mcc = 2
-br = []
-an = []
-nmcc = []
-while breaks<N and nodes_mcc>1:
-    #print('Breaks: {}'.format(breaks))
-    Gd = randomBreak(G,breaks)
-    #maximal connected component
-    MCC = max(nx.connected_component_subgraphs(Gd), key=len)
-    nodes_mcc = len(MCC)
-    #print('number of nodes in MCC {}'.format(nodes_mcc))
-    breaks = breaks + 1
-    actual_nodes = actual_nodes - breaks
-    an.append(actual_nodes)
-    br.append(breaks)
-    nmcc.append(nodes_mcc)
+t= 0
+min_nmcc = 1000000000000
+for t in range(0,1):
+    GC = G.copy()
+    breaks = 0
+    nodes_mcc = 2
+    worst_case_nmcc = []
+    worst_case_br = []
+    br = []
+    nmcc = []
+    while breaks<=N and nodes_mcc>1:
+        Gd = randomBreak_v2(GC,1)
+        MCC = max(nx.connected_component_subgraphs(Gd), key=len)
+        nodes_mcc = len(MCC)
+        breaks = breaks + 1
+        br.append(breaks)
+        nmcc.append(nodes_mcc)
+    
+    #Expanding
+    br.append(N)
+    nmcc.append(1)
+    
+    if sum(nmcc) < min_nmcc:
+        min_nmcc = sum(nmcc)
+        worst_case_nmcc = nmcc
+        worst_case_br = br
+        
+    diag = []
+    d = 0
+    while d<=N:
+        diag.append(d)
+        d = d + 1 
 
-print(nmcc)
-
-diag = []
-d = 0
-while d<=N:
-    diag.append(d)
-    d = d + 1 
-
-plt.plot(br,nmcc,'g')
+plt.plot(worst_case_br,worst_case_nmcc,'b')
 diag_rev = diag.copy()
 diag_rev.reverse()
-#plt.plot(diag,diag_rev,'y')
+plt.plot(diag,diag_rev,'y')
+
 plt.title('Robustness of Algorithm')
 plt.xlabel('Number of Random Breaks')
 plt.ylabel('Number of nodes in MCC')
 plt.show()
     
-    #showGraph(MCC)
-    #degreeHistogram(MCC,'violet')
-    #degreeLoglog(MCC,'violet')
-    #print(nx.average_shortest_path_length(Gd))
