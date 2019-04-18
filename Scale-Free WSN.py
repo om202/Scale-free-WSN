@@ -24,7 +24,7 @@ import operator
 
 nodes = [] #nodes list 
 D = 500 #max size of WSN deployment area
-N = 800 #number of Nodes
+N = 1000 #number of Nodes
 R =  200 #Radius of transmission 
 HD = 100 #highest degree
 PTE = 0.01 #percentage of total edges 
@@ -103,20 +103,13 @@ def randomBreak_v2(GC,RB):
     return GC
 
 def degreeLoglog(G,clr):
-    d = nx.degree(G)
-    degr = []
-    for i in d:
-        degr.append(i[1])
-    s = 0
-    for i in d:
-        s = s + i[1]
-    sel = []
-    for i in d:
-        sel.append(i[1]/s)
-        
-    plt.loglog(degr,sel, marker='o', linestyle='-', linewidth=1, markersize=6)
-    plt.title("Loglog Plot")
-    plt.ylabel("P(k)")
+    degree_sequence = sorted([d for n, d in G.degree()], reverse=True)
+    degreeCount = collections.Counter(degree_sequence)
+    deg, cnt = zip(*degreeCount.items())
+    #plt.bar(deg, cnt, width=0.80, color=clr)
+    plt.loglog(deg,cnt,'-bo')
+    plt.title("Degree Histogram")
+    plt.ylabel("Count")
     plt.xlabel("Degree")
     plt.show()
 
@@ -291,7 +284,7 @@ G = prefAttachment(G,seed,nodePair)
 showGraph(G)
 
 degreeHistogram(G,'brown')
-#degreeLoglog(G,'g')
+degreeLoglog(G,'g')
 #print(nx.average_shortest_path_length(G))
 
 
