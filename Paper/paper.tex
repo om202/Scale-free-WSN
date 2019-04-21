@@ -1,0 +1,108 @@
+\documentclass{article}
+
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+
+\title{A Scale-free topology construction model for Wireless Sensor Network (WSN)}
+
+
+\author{
+  Omprakash Sah Kanu \\
+  Department of Computer Science \& Engineering\\
+  National Institute of Technology Delhi \\
+  Delhi 110040 (India)\\
+  \texttt{151210051@nitdelhi.ac.in} \\
+  %% examples of more authors
+   \And
+ Vaidya Srikar \\
+  Department of Computer Science \& Engineering\\
+  National Institute of Technology Delhi \\
+  Delhi 110040 (India)\\
+  \texttt{151210001@nitdelhi.ac.in} \\
+  \And
+   Dr. Richa Mishra\\
+    Department of Computer Science \& Engineering\\
+  National Institute of Technology Delhi \\
+  Delhi 110040 (India)\\
+  \texttt{richamishra@nitdelhi.ac.in} \\
+}
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+WSNs have been an integral part of modern society and one of the most promising technologies of the future. They have been an important part in projects like smart cities, medical health, intelligent home, area surveillance, agriculture and military. However, research must address various challenges to help the widespread deployment of WSN. One of the major problems being faced by these networks is robustness. In this paper we have proposed an algorithm to generate scale-free WSNs. Scale-free networks have been widely known in complex networks for their robustness towards random failure. So adopting the concept of scale-free network and modifying it to suit various constraints of WSN is been the major part of our work in this paper. 
+\end{abstract}
+
+
+% keywords can be removed
+\keywords{Wireless sensor network, Robustness, preferential attachment}
+
+
+\section{Introduction}
+A WSN contains group of spatially distributed sensor nodes deployed at a certain area of interest or dispersed randomly. The job of a sensor node is to sense the physical parameters of the area of deployment and route the data to a central location. The central location is usually a base station which act as a medium between the sensor nodes and the internet. 
+
+Since the deployment of a node is dependent on the region of interest, each WSN shall have different node placements. Taking this factor into consideration we have made sure that our method work with random node deployment. We also took into consideration the coordinates where a particular node is placed at.    
+
+A node is usually constrained with limited power supply, sensing range, processing power etc. The constraint power supply can lead a node to death if there is no external backup source. Failure of a node may also result due to human attacks or unfavourable environmental situtations such as fire or animal intervention. Failures may be random or malicious. In this paper we are concerned with random failures.
+
+The main objective of our work is improving robustness of network topologies for WSNs. That means, we wanted to generate a network topology for any WSN deployment whereby the connection between as many nodes are preserved after certain nodes failure. Taking into consideration random failures where a attacker chooses a node randomly from the network and targets it. Thus, the resulting WSN toplogy with our method shall be resistant to random failure.
+
+In our work, we choosed scale-free topology. Scale-free is been adopted from the field of complex network theory. Scale-free networks research have shown its abundance in nature and man-made networks such as semantic netowork, protein-protein interaction, airline network, internet, WWW, software dependency graph, etc. All these network strongly correlates with robustness to failure. The scale-free networks also a good fit for homogeneous networks making it suitable for WSN with same radius of coverage and power-level. The main characterstic in a scale-free network is that its degree distribution follows a power-law. This means, in the network there is relative abundance of nodes with small degree than those with high degree. The high-degree nodes are called hubs. This means in a random attack, majority of small-degree nodes are more likely to be attacked whose failure doesn't affect the network connectivity much. The generative model used for construction of scale-free topology is been Barab{\'a}si-Albert model, which has been modified to suit the WSN requirements. 
+
+The reamainder of the paper is organized as follows. In section 2, we present a brief overview of related works and literature survey. Section 3 describes our algorithm for scale-free topology construction. Section 4 shows evalution of our result and how it compares with other algorithms. Section 5 concludes this paper. Section 6 discuss our future work.
+
+\section{Related-Work}
+
+
+\section{Proposed algorithm}
+
+\section{Results}
+
+\section{Conclusion}
+
+\section{Future Works}
+
+
+\bibliographystyle{unsrt}  
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+%%% and comment out the ``thebibliography'' section.
+
+
+%%% Comment out this section when you \bibliography{references} is enabled.
+\begin{thebibliography}{1}
+
+\bibitem{kour2014real}
+George Kour and Raid Saabne.
+\newblock Real-time segmentation of on-line handwritten arabic script.
+\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
+  International Conference on}, pages 417--422. IEEE, 2014.
+
+\bibitem{kour2014fast}
+George Kour and Raid Saabne.
+\newblock Fast classification of handwritten on-line arabic characters.
+\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
+  International Conference of}, pages 312--318. IEEE, 2014.
+
+\bibitem{hadash2018estimate}
+Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
+  Jacovi.
+\newblock Estimate and replace: A novel approach to integrating deep neural
+  networks with existing applications.
+\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
+
+\end{thebibliography}
+
+
+\end{document}
