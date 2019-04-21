@@ -24,7 +24,7 @@ import operator
 
 nodes = [] #nodes list 
 D = 500 #max size of WSN deployment area
-N = 1000 #number of Nodes
+N = 100 #number of Nodes
 R =  200 #Radius of transmission 
 HD = 100 #highest degree
 PTE = 0.01 #percentage of total edges 

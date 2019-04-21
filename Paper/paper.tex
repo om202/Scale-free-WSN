@@ -42,7 +42,7 @@
 \maketitle
 
 \begin{abstract}
-WSNs have been an integral part of modern society and one of the most promising technologies of the future. They have been an important part in projects like smart cities, medical health, intelligent home, area surveillance, agriculture and military. However, research must address various challenges to help the widespread deployment of WSN. One of the major problems being faced by these networks is robustness. In this paper we have proposed an algorithm to generate scale-free WSNs. Scale-free networks have been widely known in complex networks for their robustness towards random failure. So adopting the concept of scale-free network and modifying it to suit various constraints of WSN is been the major part of our work in this paper. 
+WSNs have been an integral part of modern society and one of the most promising technologies of the future. They have been an important part in projects like smart cities, medical health, intelligent home, area surveillance, agriculture and military. However, research must address various challenges to help the widespread deployment of WSN. One of the major problems being faced by these networks is robustness. In this paper we have proposed an algorithm to generate scale-free WSNs. Scale-free networks have been widely known in complex networks for their robustness towards random failure. So adopting the concept of scale-free network and modifying it to suit various constraints of WSN has been the major part of our work in this paper. 
 \end{abstract}
 
 
@@ -57,16 +57,32 @@ Since the deployment of a node is dependent on the region of interest, each WSN 
 
 A node is usually constrained with limited power supply, sensing range, processing power etc. The constraint power supply can lead a node to death if there is no external backup source. Failure of a node may also result due to human attacks or unfavourable environmental situtations such as fire or animal intervention. Failures may be random or malicious. In this paper we are concerned with random failures.
 
-The main objective of our work is improving robustness of network topologies for WSNs. That means, we wanted to generate a network topology for any WSN deployment whereby the connection between as many nodes are preserved after certain nodes failure. Taking into consideration random failures where a attacker chooses a node randomly from the network and targets it. Thus, the resulting WSN toplogy with our method shall be resistant to random failure.
+The main objective of our work is improving robustness of network topologies for WSNs. That means, we wanted to generate a network topology for any WSN deployment whereby the connection between as many nodes are preserved after certain nodes failure taking into consideration random failures where a attacker chooses a node randomly from the network and targets it. Thus, the resulting WSN toplogy with our method shall be resistant to random failure.
 
-In our work, we choosed scale-free topology. Scale-free is been adopted from the field of complex network theory. Scale-free networks research have shown its abundance in nature and man-made networks such as semantic netowork, protein-protein interaction, airline network, internet, WWW, software dependency graph, etc. All these network strongly correlates with robustness to failure. The scale-free networks also a good fit for homogeneous networks making it suitable for WSN with same radius of coverage and power-level. The main characterstic in a scale-free network is that its degree distribution follows a power-law. This means, in the network there is relative abundance of nodes with small degree than those with high degree. The high-degree nodes are called hubs. This means in a random attack, majority of small-degree nodes are more likely to be attacked whose failure doesn't affect the network connectivity much. The generative model used for construction of scale-free topology is been Barab{\'a}si-Albert model, which has been modified to suit the WSN requirements. 
+In our work, we chose scale-free topology. Scale-free has been adopted from the field of complex network theory. Scale-free networks research have shown its abundance in nature and man-made networks such as semantic network, protein-protein interaction, airline network, internet, WWW, software dependency graph, etc. All these networks strongly correlates with robustness to failure. The scale-free networks are also a good fit for homogeneous networks making it suitable for WSN with same radius of coverage and power-level. The main characterstic in a scale-free network is that its degree distribution follows a power-law. This means, in the scale-free network there is relative abundance of nodes with small degree than those with high degree. The high-degree nodes are called hubs. This means in a random attack, majority of small-degree nodes are more likely to be attacked whose failure doesn't affect the network connectivity. The generative model used for construction of scale-free topology has been Barab{\'a}si-Albert model, which has been modified to suit the WSN requirements. 
 
-The reamainder of the paper is organized as follows. In section 2, we present a brief overview of related works and literature survey. Section 3 describes our algorithm for scale-free topology construction. Section 4 shows evalution of our result and how it compares with other algorithms. Section 5 concludes this paper. Section 6 discuss our future work.
+The remainder of the paper is organized as follows. In section 2, we present a brief overview of related works and literature survey. Section 3 describes our algorithm for scale-free topology construction. Section 4 shows evalution of our result and how it compares with other algorithms. Section 5 concludes this paper. Section 6 discuss our future work.
 
 \section{Related-Work}
 
-
 \section{Proposed algorithm}
+In this section we shall brief on Barab{\'a}si-Albert model and how its been modified to suit WSN. Then we shall move ahead explaining our algorithm in detail.
+
+BA model is an algorithm for generating random scale-free networks using preferential attachment mechanism. The algorithm was proposed by Albert Barab{\'a}si \& R{\'e}ka Albert to explain the existence of power-law in real networks. The algorithm works in the following way:
+\begin{enumerate}
+\item The algorithm begins with $m_o$ initial connected nodes.
+\item The network grows by introducing new nodes to join the network one by one. 
+\item The newly joined node connect to $m \leq m_o$ existing nodes with probability $p_i$ that is proportional to the number of links that the existing nodes already have. This step is called as preferential attachment. The probability $pi_i$ that a new node is connected to node $i$ is given as:
+		$$p_i = \frac{k_i}{\sum_i{k_j}}$$
+where $k_i$ is the degree of node $i$ and the sum is made over pre-existing node $j$
+\end{enumerate}
+This method can be successfully used to generate scale-free networks with power-law distribution. But it has to be modified enough to suit the various constraints of WSN. The various constraints of WSN to be taken into account include: 
+\begin{enumerate}
+\item Communication range: A sensor node can only connect to a node $i$ in its radius of coverage $R$. Calling the nodes within $R$ to be neighbours of $i$. $i$ can only have preferential attachment with its neighbours. The length of $R$ needs to large enough to have enough neighbours for preferential attachment. Small $R$ cause very few neighbours which can result in small clusters in the network and thus fails to have scale-free property.
+\item Degree size: The maximum degree that $i$ can have is required to be controlled. This is because, higher the degree of $i$, higer the number of nodes that passes data to $i$. Failing to control it can cause higher energy drainage. 
+\item Network growth: WSN network can be static as well as dynamic. When dynamic, new nodes shall be introduced, they shall have preferential attachment with its neighbours. When static, the existing nodes need to wire themselves with $p_i$ within their neighbourhood.
+\end{enumerate}
+
 
 \section{Results}
 
