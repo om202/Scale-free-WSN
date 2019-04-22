@@ -19,178 +19,199 @@
 
 
 \author{
-  Omprakash Sah Kanu \\
-  Department of Computer Science \& Engineering\\
-  National Institute of Technology Delhi \\
-  Delhi 110040 (India)\\
-  \texttt{151210051@nitdelhi.ac.in} \\
-  %% examples of more authors
-   \And
- Vaidya Srikar \\
-  Department of Computer Science \& Engineering\\
-  National Institute of Technology Delhi \\
-  Delhi 110040 (India)\\
-  \texttt{151210001@nitdelhi.ac.in} \\
-  \And
-   Dr. Richa Mishra\\
-    Department of Computer Science \& Engineering\\
-  National Institute of Technology Delhi \\
-  Delhi 110040 (India)\\
-  \texttt{richamishra@nitdelhi.ac.in} \\
+	Omprakash Sah Kanu \\
+	Department of Computer Science \& Engineering\\
+	National Institute of Technology Delhi \\
+	Delhi 110040 (India)\\
+	\texttt{151210051@nitdelhi.ac.in} \\
+	%% examples of more authors
+	\And
+	Vaidya Srikar \\
+	Department of Computer Science \& Engineering\\
+	National Institute of Technology Delhi \\
+	Delhi 110040 (India)\\
+	\texttt{151210001@nitdelhi.ac.in} \\
+	\And
+	Dr. Richa Mishra\\
+	Department of Computer Science \& Engineering\\
+	National Institute of Technology Delhi \\
+	Delhi 110040 (India)\\
+	\texttt{richamishra@nitdelhi.ac.in} \\
 }
 
 
 \begin{document}
-\maketitle
-
-\begin{abstract}
-WSNs have been an integral part of modern society and one of the most promising technologies of the future. They have been an important part in projects like smart cities, medical health, intelligent home, area surveillance, agriculture and military. However, research must address various challenges to help the widespread deployment of WSN. One of the major problems being faced by these networks is robustness. In this paper we have proposed an algorithm to generate scale-free WSNs. Scale-free networks have been widely known in complex networks for their robustness towards random failure. So adopting the concept of scale-free network and modifying it to suit various constraints of WSN has been the major part of our work in this paper. 
-\end{abstract}
-
-
-% keywords can be removed
-\keywords{Wireless sensor network, Robustness, preferential attachment}
-
-
-\section{Introduction}
-A WSN contains group of spatially distributed sensor nodes deployed at a certain area of interest or dispersed randomly. The job of a sensor node is to sense the physical parameters of the area of deployment and route the data to a central location. The central location is usually a base station which act as a medium between the sensor nodes and the internet. 
-
-Since the deployment of a node is dependent on the region of interest, each WSN shall have different node placements. Taking this factor into consideration we have made sure that our method work with random node deployment. We also took into consideration the coordinates where a particular node is placed at.    
-
-A node is usually constrained with limited power supply, sensing range, processing power etc. The constraint power supply can lead a node to death if there is no external backup source. Failure of a node may also result due to human attacks or unfavourable environmental situtations such as fire or animal intervention. Failures may be random or malicious. In this paper we are concerned with random failures.
-
-The main objective of our work is improving robustness of network topologies for WSNs. That means, we wanted to generate a network topology for any WSN deployment whereby the connection between as many nodes are preserved after certain nodes failure taking into consideration random failures where a attacker chooses a node randomly from the network and targets it. Thus, the resulting WSN toplogy with our method shall be resistant to random failure.
-
-In our work, we chose scale-free topology. Scale-free has been adopted from the field of complex network theory. Scale-free networks research have shown its abundance in nature and man-made networks such as semantic network, protein-protein interaction, airline network, internet, WWW, software dependency graph, etc. All these networks strongly correlates with robustness to failure. The scale-free networks are also a good fit for homogeneous networks making it suitable for WSN with same radius of coverage and power-level. The main characterstic in a scale-free network is that its degree distribution follows a power-law. This means, in the scale-free network there is relative abundance of nodes with small degree than those with high degree. The high-degree nodes are called hubs. This means in a random attack, majority of small-degree nodes are more likely to be attacked whose failure doesn't affect the network connectivity. The generative model used for construction of scale-free topology has been Barab{\'a}si-Albert model, which has been modified to suit the WSN requirements. 
-
-The remainder of the paper is organized as follows. In section 2, we present a brief overview of related works and literature survey. Section 3 describes our algorithm for scale-free topology construction. Section 4 shows evalution of our result and how it compares with other algorithms. Section 5 concludes this paper. Section 6 discuss our future work.
-
-\section{Related-Work}
-
-\section{Proposed algorithm}
-In this section we shall brief on Barab{\'a}si-Albert model and how its been modified to suit WSN. Then we shall move ahead explaining our algorithm in detail.
-
-BA model is an algorithm for generating random scale-free networks using preferential attachment mechanism. The algorithm was proposed by Albert Barab{\'a}si \& R{\'e}ka Albert to explain the existence of power-law in real networks. The algorithm works in the following way:
-\begin{enumerate}
-\item The algorithm begins with $m_o$ initial connected nodes.
-\item The network grows by introducing new nodes to join the network one by one. 
-\item The newly joined node connects to $m \leq m_o$ existing nodes with probability $p_i$ that is proportional to the number of links that the existing nodes already have. This step is called as preferential attachment. The probability $pi_i$ that a new node is connected to node $i$ is given as:
+	\maketitle
+	
+	\begin{abstract}
+		WSNs have been an integral part of modern society and one of the most promising technologies of the future. They have been an important part in projects like smart cities, medical health, intelligent home, area surveillance, agriculture, and military. However, research must address various challenges to help the widespread deployment of WSN. One of the major problems being faced by these networks is robustness. In this paper, we have proposed an algorithm to generate scale-free WSNs. Scale-free networks have been widely known in complex networks for their robustness towards random failure. So adopting the concept of scale-free network and modifying it to suit various constraints of WSN has been the major part of our work in this paper. 
+	\end{abstract}
+	
+	
+	% keywords can be removed
+	\keywords{Wireless sensor network, Robustness, preferential attachment}
+	
+	
+	\section{Introduction}
+	A WSN contains a group of spatially distributed sensor nodes deployed at a certain area of interest or dispersed randomly. The job of a sensor node is to sense the physical parameters of the area of deployment and route the data to a central location. The central location is usually a base station which acts as a medium between the sensor nodes and the internet. 
+	
+	Since the deployment of a node is dependent on the region of interest, each WSN shall have different node placements. Taking this factor into consideration we have made sure that our method works with random node deployment. We also took into consideration the coordinates where a particular node is placed at.    
+	
+	A node is usually constrained with limited power supply, sensing range, processing power, etc. The constraint power supply can lead a node to death if there is no external backup source. Failure of a node may also result due to human attacks or unfavorable environmental situations such as fire or animal intervention. Failures may be random or malicious. In this paper, we are concerned with random failures.
+	
+	The main objective of our work is improving the robustness of network topologies for WSNs. That means we wanted to generate a network topology for any WSN deployment whereby the connection between as many nodes are preserved after certain nodes failure taking into consideration random failures where an attacker chooses a node randomly from the network and targets it. Thus, the resulting WSN topology with our method shall be resistant to random failure.
+	
+	In our work, we chose scale-free topology. Scale-free has been adopted from the field of complex network theory. Scale-free networks research has shown its abundance in nature and man-made networks such as semantic network, protein-protein interaction, airline network, internet, WWW, software dependency graph, etc. All these networks strongly correlate with robustness to failure. The scale-free networks are also a good fit for homogeneous networks making it suitable for WSN with the same radius of coverage and power-level. The main characteristic in a scale-free network is that its degree distribution follows a power-law. This means, in the scale-free network there is a relative abundance of nodes with a small degree than those with a high degree. The high-degree nodes are called hubs. This means in a random attack, majority of small-degree nodes are more likely to be attacked whose failure doesn't affect the network connectivity. The generative model used for the construction of scale-free topology has been Barab{\'a}si-Albert model, which has been modified to suit the WSN requirements. 
+	
+	The remainder of the paper is organized as follows. In section 2, we present a brief overview of related works and literature survey. Section 3 describes our algorithm for scale-free topology construction. Section 4 shows evaluation of our result and how it compares with other algorithms. Section 5 concludes this paper. Section 6 discusses our future work.
+	
+	\section{Related-Work}
+	
+	\section{Proposed algorithm}
+	In this section we shall brief on Barab{\'a}si-Albert model and how it been modified to suit WSN. Then we shall move ahead explaining our algorithm in detail.
+	
+	BA model is an algorithm for generating random scale-free networks using preferential attachment mechanism. The algorithm was proposed by Albert Barab{\'a}si \& R{\'e}ka Albert to explain the existence of power-law in real networks. The algorithm works in the following way:
+	\begin{enumerate}
+		\item The algorithm begins with $m_o$ initial connected nodes.
+		\item The network grows by introducing new nodes to join the network one by one. 
+		\item The newly joined node connects to $m \leq m_o$ existing nodes with probability $p_i$ that is proportional to the number of links that the existing nodes already have. This step is called a preferential attachment. The probability $pi_i$ that a new node is connected to node $i$ is given as:
 		\begin{equation}
 		p_i = \frac{k_i}{\sum_i{k_j}}
 		\end{equation}
-where $k_i$ is the degree of node $i$ and the sum is made over pre-existing node $j$
-\end{enumerate}
-This method can be successfully used to generate scale-free networks with power-law distribution. But it has to be modified enough to suit the various constraints of WSN. The various constraints of WSN to be taken into account include: 
-\begin{enumerate}
-\item Communication range: A sensor node can only connect to a node $i$ in its radius of coverage $R$. Calling the nodes within $R$ to be neighbours of $i$. $i$ can only have preferential attachment with its neighbours. The length of $R$ needs to large enough to have enough neighbours for preferential attachment. Small $R$ cause very few neighbours which can result in small clusters in the network and thus fails to have scale-free property.
-\item Degree size: The maximum degree that $i$ can have is required to be controlled. This is because, higher the degree of $i$, higer the number of nodes that passes data to $i$. Failing to control it can cause higher energy drainage. 
-\item Network growth: WSN network can be static as well as dynamic. When dynamic, new nodes shall be introduced, they shall have preferential attachment with its neighbours. When static, the existing nodes need to wire themselves with $p_i$ within their neighbourhood.
-\end{enumerate}
-
-Taking above factors into consideration, our proposed algorithm for WSN is described below.
-
-We begin by generating random coordinates in area $DXD$. Each coordinate denote the position of a node. Each node has radius of coverage $R$. We have considered homogeneous WSN keeping $R$ for each node same. Within $R$ we identify nodes that shall be called its neighbours $nbr$. 
-
-We choose a node at the centre of network. Initially there are no edges between the nodes. So for $i$ we randomly choose a node $j$ from $nbr$ and make a edge between them. Else, we define the connection probability for nodes in $nbr$, $p_i$ as follows. If degree of $i$ is less than highest degree $HD$ then \begin{equation} p_i = \frac{k_i}{\sum_i{k_j}}\end{equation} else, \begin{equation}p_i = \frac{k_i}{k_i*\sum_i{k_j}}\end{equation} $HD$ is choosen such that to limit highest degree within the network. Equation 2 is similar as equation 1 if degree of a node is less than $HD$ else equation 3 is used to reduce the probability of choosing the node.
-
-After a node $i$ chooses and makes connection with a node $j$ in its $nbr$ with probability $p_i$, we choose $j$ as next node. Next, node $j$ chooses a node from its $nbr$ and make connection with it. The process follows until $e \leq e_{max}$ connections are made. $e_{max}$ is the total possible edges that is possible for $N$ nodes, mathematically defined as $e_{max} =  \frac{N*(N-1)}{2}$ and $e$ is the fraction of edges of $e_{max}$.
-
-
-\section{Results}
-In this section we shall evaluate the scale-free property our model and then analyse its robustness. The alogorithm was implemented and simulated using Python on Spyder.
-
-We took an area of $500*500 m^2$ and randomly choosed $N$ coordinates within it. Each $N$ coordinates denote $N$ individual sensor-nodes deployed in its area of interest or distributed randomly. Each sensor-node were considered homogeneous with radius of coverage i.e. radius within which a particular sensor-node can send and recieve data with other nodes to be $R=200$. We choosed this number for our simulation purpose. $R$ is required to be choosen smartly by the deployer taking into consideration energy consumption ($R\propto E$) and number of neighbours for each node (less neighbours fail to form scale-free topology). We choose $m=1$ i.e. number of connections a particular node form during its turn to form preferential-attachment. We choosed number of edges for the network $e$ to be $0.01\%$ of $e_{max}$. $e$ is to be choosen considerably since large $e$ shall result in large number of nodes to have high degree, which shall reduce power efficiency of the network.
-
-\subsection{Scale-free evaluation}
-Figure 1 shows scale-free properties of the networks for our simulation. We have choosen three networks with different number of nodes thus different densities. We have presented two figures for each type of network. Top figure shows the actual network formation and bottom figure shows the degree distribution graph for the network. In the top figure, it can be noticed that there are two colors for the nodes - bright red and dark red. Bright red represents the hub nodes i.e. the nodes with higher degree and dark red represents nodes with low degree. 
-
-For figure 1(a) has 100 nodes, figure 1(b) has 400 nodes and figure 1(c) has 800 nodes. It can be noticed that in the top figures the number of bright red nodes is considerably small as compared to dark red nodes. This means there are very few hubs in the network and large number of nodes with low degree. Same results are shown by the bottom graphs as well. In the graph x-coordinate shows degree size of the nodes and y-coordinate shows number of nodes having the particular degree. Notice that, for higher degree the count of nodes are less while for smaller degree the count of nodes are higher.
-
-This proves that our proposed algorithm for generating scale-free network topology, which has been simulated in figure 1, indeed generates scale-free topology.
-
-\subsection{Robustness analysis}
-
-
-\begin{figure}[!htb]
-	\minipage{0.32\textwidth}
-	\includegraphics[width=\linewidth]{Results/100-1.png}
-	\includegraphics[width=\linewidth]{Results/100-1(B).png}
-	\begin{center}
-		(a)
-	\end{center}
-	\endminipage\hfill
-	\minipage{0.32\textwidth}
-	\includegraphics[width=\linewidth]{Results/400-1.png}
-	\includegraphics[width=\linewidth]{Results/400-1(B).png}
-	\begin{center}
-		(b)
-	\end{center}
-	\endminipage\hfill
-	\minipage{0.32\textwidth}%
-	\includegraphics[width=\linewidth]{Results/800-1.png}
-	\includegraphics[width=\linewidth]{Results/800-1(B).png}
-	\begin{center}
-		(c)
-	\end{center}
-	\endminipage
-	\caption{Scale-free properties in WSNs. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
-\end{figure}
-
-\begin{figure}[!htb]
-	\minipage{0.32\textwidth}
-	\includegraphics[width=\linewidth]{Results/100-1(G).png}
-	\begin{center}
-		(a)
-	\end{center}
-	\endminipage\hfill
-	\minipage{0.32\textwidth}
-	\includegraphics[width=\linewidth]{Results/400-1(G).png}
-	\begin{center}
-		(b)
-	\end{center}
-	\endminipage\hfill
-	\minipage{0.32\textwidth}%
-	\includegraphics[width=\linewidth]{Results/800-1(G).png}
-	\begin{center}
-		(c)
-	\end{center}
-	\endminipage
-	\caption{Robustness results. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
-\end{figure}
-
-\section{Conclusion}
-
-\section{Future Works}
-
-
-\bibliographystyle{unsrt}  
-%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
-%%% and comment out the ``thebibliography'' section.
-
-
-%%% Comment out this section when you \bibliography{references} is enabled.
-\begin{thebibliography}{1}
-
-\bibitem{kour2014real}
-George Kour and Raid Saabne.
-\newblock Real-time segmentation of on-line handwritten arabic script.
-\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
-  International Conference on}, pages 417--422. IEEE, 2014.
-
-\bibitem{kour2014fast}
-George Kour and Raid Saabne.
-\newblock Fast classification of handwritten on-line arabic characters.
-\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
-  International Conference of}, pages 312--318. IEEE, 2014.
-
-\bibitem{hadash2018estimate}
-Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
-  Jacovi.
-\newblock Estimate and replace: A novel approach to integrating deep neural
-  networks with existing applications.
-\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
-
-\end{thebibliography}
-
-
+		where $k_i$ is the degree of node $i$ and the sum is made over pre-existing node $j$
+	\end{enumerate}
+	This method can be successfully used to generate scale-free networks with the power-law distribution. But it has to be modified enough to suit the various constraints of WSN. The various constraints of WSN to be taken into account include: 
+	\begin{enumerate}
+		\item Communication range: A sensor node can only connect to a node $i$ in its radius of coverage $R$. Calling the nodes within $R$ to be neighbors of $i$. $i$ can only have a preferential attachment with its neighbors. The length of $R$ needs to large enough to have enough neighbors for preferential attachment. Small $R$ cause very few neighbors which can result in small clusters in the network and thus fails to have scale-free property.
+		\item Degree size: The maximum degree that $i$ can have is required to be controlled. This is because, the higher the degree of $i$, higher the number of nodes that passes data to $i$. Failing to control it can cause higher energy drainage. 
+		\item Network growth: WSN network can be static as well as dynamic. When dynamic, new nodes shall be introduced, they shall have a preferential attachment with its neighbors. When static, the existing nodes need to wire themselves with $p_i$ within their neighborhood.
+	\end{enumerate}
+	
+	Taking the above factors into consideration, our proposed algorithm for WSN is described below.
+	
+	We begin by generating random coordinates in area $DXD$. Each coordinate denote the position of a node. Each node has a radius of coverage $R$. We have considered homogeneous WSN keeping $R$ for each node same. Within $R$ we identify nodes that shall be called its neighbors $nbr$. 
+	
+	We choose a node at the centre of network. Initially there are no edges between the nodes. So for $i$ we randomly choose a node $j$ from $nbr$ and make a edge between them. Else, we define the connection probability for nodes in $nbr$, $p_i$ as follows. If degree of $i$ is less than highest degree $HD$ then \begin{equation} p_i = \frac{k_i}{\sum_i{k_j}}\end{equation} else, \begin{equation}p_i = \frac{k_i}{k_i*\sum_i{k_j}}\end{equation} $HD$ is choosen such that to limit highest degree within the network. Equation 2 is similar as equation 1 if degree of a node is less than $HD$ else equation 3 is used to reduce the probability of choosing the node.
+	
+	After a node $i$ chooses and makes connection with a node $j$ in its $nbr$ with probability $p_i$, we choose $j$ as next node. Next, node $j$ chooses a node from its $nbr$ and make connection with it. The process follows until $e \leq e_{max}$ connections are made. $e_{max}$ is the total possible edges that is possible for $N$ nodes, mathematically defined as $e_{max} =  \frac{N*(N-1)}{2}$ and $e$ is the fraction of edges of $e_{max}$.
+	
+	
+	\section{Results}
+	In this section, we shall evaluate the scale-free property of our model and then analyze its robustness. The algorithm was implemented and simulated using Python on Spyder.
+	
+	We took an area of $500*500 m^2$ and randomly chose $N$ coordinates within it. Each $N$ coordinates denote $N$ individual sensor-nodes deployed in its area of interest or distributed randomly. Each sensor-node were considered homogeneous with the same radius of coverage i.e. radius within which a particular sensor-node can send and receive data with other nodes to be $R=200$. We chose this number for our simulation purpose. $R$ is required to be chosen smartly by the deployer taking into consideration energy consumption ($R\propto E$) and the number of neighbors for each node (fewer neighbors fail to form scale-free topology). We choose $m=1$ i.e. number of connections a particular node form during its turn to form preferential-attachment. We choose number of edges for the network $e$ to be $0.01\%$ of $e_{max}$. $e$ is to be chosen considerably since large $e$ shall result in a large number of nodes to have a high degree, which shall reduce the power efficiency of the network.
+	
+	\subsection{Scale-free evaluation}
+	Figure 1 shows the scale-free properties of the networks for our simulation. We have chosen three networks with a different number of nodes thus different densities. We have presented two figures for each type of network. The top figure shows the actual network formation and bottom figure shows the degree distribution graph for the network. In the top figure, it can be noticed that there are two colors for the nodes - bright red and dark red. Bright red represents the hub nodes i.e. the nodes with a higher degree and dark red represents nodes with low degree. 
+	
+	For figure 1(a) has 100 nodes, figure 1(b) has 400 nodes and figure 1(c) has 800 nodes. It can be noticed that in the top figures the number of bright red nodes is considerably small as compared to dark red nodes. This means there are very few hubs in the network and a large number of nodes with low degree. Same results are shown by the bottom graphs as well. In the graph, the x-axis shows degree size of the nodes and the y-axis shows the number of nodes having a particular degree. Notice that, for a higher degree, the count of nodes are less while for the smaller degree the count of nodes is higher.
+	
+	This proves that our proposed algorithm for generating scale-free network topology, which has been simulated in figure 1, indeed generates scale-free topology.
+	
+	\begin{figure}[!htb]
+		\minipage{0.32\textwidth}
+		\includegraphics[width=\linewidth]{Results/100-1.png}
+		\includegraphics[width=\linewidth]{Results/100-1(B).png}
+		\begin{center}
+			(a)
+		\end{center}
+		\endminipage\hfill
+		\minipage{0.32\textwidth}
+		\includegraphics[width=\linewidth]{Results/400-1.png}
+		\includegraphics[width=\linewidth]{Results/400-1(B).png}
+		\begin{center}
+			(b)
+		\end{center}
+		\endminipage\hfill
+		\minipage{0.32\textwidth}%
+		\includegraphics[width=\linewidth]{Results/800-1.png}
+		\includegraphics[width=\linewidth]{Results/800-1(B).png}
+		\begin{center}
+			(c)
+		\end{center}
+		\endminipage
+		\caption{Scale-free properties in WSNs. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
+	\end{figure}
+	
+	\subsection{Robustness analysis}
+	Figure 2 shows three graphs showing robustness results of the above-mentioned networks. The simulation for the robustness of our resultant scale-free networks was done in the following manner. We took the network and noted the initial number of nodes $N_o$. From $N_o$ nodes, we randomly choose any node and removed it from the network. The removal of a node shall subtract the node from the total node as well as remove all its associated connections with its neighbor nodes. Again from $N_0 - 1$ remaining nodes, we shall again choose any random node and remove it from the network. This cumulative removal of node shall go on until all $N_o$ nodes are removed. During each random node removal process, we shall note the number of nodes in the maximal connected component (MCC) for the network. MCC for a network is the largest sub-graph for which there exists a path between each node i.e. largest sub-graph which is connected. 
+	
+	In the graph, the x-axis shows the number of random breaks and the y-axis shows the number of nodes in the MCC. The blue line shows the plot for the number of random failure vs the number of nodes in MCC while the yellow line shows the ideal number of nodes that remain in the network after a node is removed. So, the graph is showing for cumulative random node failure into the network, how many nodes remain connected. Figure 2(a) shows robustness graph for 100 nodes, figure 2(b) for 400 nodes and 2(c) for 800 nodes. From each graph, we can notice that there is no abrupt network failure. The blue plot is close enough to the yellow plot showing that for a node failure, the number of nodes in MCC are closer to the ideal number of nodes to remain in the network for each node failure.
+	
+	So the results prove that converting a WSN to scale-free topology indeed increase its robustness.
+	
+	
+	\begin{figure}[!htb]
+		\minipage{0.32\textwidth}
+		\includegraphics[width=\linewidth]{Results/100-1(G).png}
+		\begin{center}
+			(a)
+		\end{center}
+		\endminipage\hfill
+		\minipage{0.32\textwidth}
+		\includegraphics[width=\linewidth]{Results/400-1(G).png}
+		\begin{center}
+			(b)
+		\end{center}
+		\endminipage\hfill
+		\minipage{0.32\textwidth}%
+		\includegraphics[width=\linewidth]{Results/800-1(G).png}
+		\begin{center}
+			(c)
+		\end{center}
+		\endminipage
+		\caption{Robustness results. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
+	\end{figure}
+	
+	\subsection{Shortest-path length analysis}
+	In this section, we shall see another benefit of having scale-free topology i.e. having a short average-path length in the network. 
+	
+	A WSN is an ad-hoc multi-hop network. This means, for a data to be communicated from a node to the base station (BS), the data need to go through multiple nodes in between till it reaches BS. Each hop consumes energy from the intermediate nodes. So the total energy required for a data to be communicated to BS is directly proportional to the number of hops. So, we need to reduce the number of hops required for data to reach BS so that overall energy consumption in the network can be reduced.
+	
+	Scale-free network characteristic property can help in reducing hop count in the network. Since in a scale-free network a large number of nodes are connected to a hub, the hub act as a short-cut between other nodes. So for a scale-free network, the average shortest-path length for the network is reduced.
+	
+	Figure 3 shows the graph showing the plot between the average shortest path length vs the number of nodes in the scale-free network. It can be noticed that for the lowest density of 100 nodes in the area of $500*500 m^2$, the avg. the shortest path length is found to be $\approx 6$, which is highest among all other numbers of nodes. With further increase of the number of nodes, the density of the network increases and the path length is reduced further.  
+	
+	\begin{figure}
+		\begin{center}
+			\includegraphics[width=0.5\linewidth]{Results/np.png}
+			\caption{Shortest path length result: Figure shows that highest shortest path-length for the network is $\approx 6$ which reduces further with increased node density.}
+		\end{center}
+	\end{figure}
+	
+	\section{Conclusion}
+	
+	\section{Future Works}
+	
+	
+	\bibliographystyle{unsrt}  
+	%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+	%%% and comment out the ``thebibliography'' section.
+	
+	
+	%%% Comment out this section when you \bibliography{references} is enabled.
+	\begin{thebibliography}{1}
+		
+		\bibitem{kour2014real}
+		George Kour and Raid Saabne.
+		\newblock Real-time segmentation of on-line handwritten arabic script.
+		\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
+			International Conference on}, pages 417--422. IEEE, 2014.
+		
+		\bibitem{kour2014fast}
+		George Kour and Raid Saabne.
+		\newblock Fast classification of handwritten on-line arabic characters.
+		\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
+			International Conference of}, pages 312--318. IEEE, 2014.
+		
+		\bibitem{hadash2018estimate}
+		Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
+		Jacovi.
+		\newblock Estimate and replace: A novel approach to integrating deep neural
+		networks with existing applications.
+		\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
+		
+	\end{thebibliography}
+	
+	
 \end{document}
