@@ -12,6 +12,8 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \title{A Scale-free topology construction model for Wireless Sensor Network (WSN)}
 
@@ -72,8 +74,10 @@ BA model is an algorithm for generating random scale-free networks using prefere
 \begin{enumerate}
 \item The algorithm begins with $m_o$ initial connected nodes.
 \item The network grows by introducing new nodes to join the network one by one. 
-\item The newly joined node connect to $m \leq m_o$ existing nodes with probability $p_i$ that is proportional to the number of links that the existing nodes already have. This step is called as preferential attachment. The probability $pi_i$ that a new node is connected to node $i$ is given as:
-		$$p_i = \frac{k_i}{\sum_i{k_j}}$$
+\item The newly joined node connects to $m \leq m_o$ existing nodes with probability $p_i$ that is proportional to the number of links that the existing nodes already have. This step is called as preferential attachment. The probability $pi_i$ that a new node is connected to node $i$ is given as:
+		\begin{equation}
+		p_i = \frac{k_i}{\sum_i{k_j}}
+		\end{equation}
 where $k_i$ is the degree of node $i$ and the sum is made over pre-existing node $j$
 \end{enumerate}
 This method can be successfully used to generate scale-free networks with power-law distribution. But it has to be modified enough to suit the various constraints of WSN. The various constraints of WSN to be taken into account include: 
@@ -83,8 +87,76 @@ This method can be successfully used to generate scale-free networks with power-
 \item Network growth: WSN network can be static as well as dynamic. When dynamic, new nodes shall be introduced, they shall have preferential attachment with its neighbours. When static, the existing nodes need to wire themselves with $p_i$ within their neighbourhood.
 \end{enumerate}
 
+Taking above factors into consideration, our proposed algorithm for WSN is described below.
+
+We begin by generating random coordinates in area $DXD$. Each coordinate denote the position of a node. Each node has radius of coverage $R$. We have considered homogeneous WSN keeping $R$ for each node same. Within $R$ we identify nodes that shall be called its neighbours $nbr$. 
+
+We choose a node at the centre of network. Initially there are no edges between the nodes. So for $i$ we randomly choose a node $j$ from $nbr$ and make a edge between them. Else, we define the connection probability for nodes in $nbr$, $p_i$ as follows. If degree of $i$ is less than highest degree $HD$ then \begin{equation} p_i = \frac{k_i}{\sum_i{k_j}}\end{equation} else, \begin{equation}p_i = \frac{k_i}{k_i*\sum_i{k_j}}\end{equation} $HD$ is choosen such that to limit highest degree within the network. Equation 2 is similar as equation 1 if degree of a node is less than $HD$ else equation 3 is used to reduce the probability of choosing the node.
+
+After a node $i$ chooses and makes connection with a node $j$ in its $nbr$ with probability $p_i$, we choose $j$ as next node. Next, node $j$ chooses a node from its $nbr$ and make connection with it. The process follows until $e \leq e_{max}$ connections are made. $e_{max}$ is the total possible edges that is possible for $N$ nodes, mathematically defined as $e_{max} =  \frac{N*(N-1)}{2}$ and $e$ is the fraction of edges of $e_{max}$.
+
 
 \section{Results}
+In this section we shall evaluate the scale-free property our model and then analyse its robustness. The alogorithm was implemented and simulated using Python on Spyder.
+
+We took an area of $500*500 m^2$ and randomly choosed $N$ coordinates within it. Each $N$ coordinates denote $N$ individual sensor-nodes deployed in its area of interest or distributed randomly. Each sensor-node were considered homogeneous with radius of coverage i.e. radius within which a particular sensor-node can send and recieve data with other nodes to be $R=200$. We choosed this number for our simulation purpose. $R$ is required to be choosen smartly by the deployer taking into consideration energy consumption ($R\propto E$) and number of neighbours for each node (less neighbours fail to form scale-free topology). We choose $m=1$ i.e. number of connections a particular node form during its turn to form preferential-attachment. We choosed number of edges for the network $e$ to be $0.01\%$ of $e_{max}$. $e$ is to be choosen considerably since large $e$ shall result in large number of nodes to have high degree, which shall reduce power efficiency of the network.
+
+\subsection{Scale-free evaluation}
+Figure 1 shows scale-free properties of the networks for our simulation. We have choosen three networks with different number of nodes thus different densities. We have presented two figures for each type of network. Top figure shows the actual network formation and bottom figure shows the degree distribution graph for the network. In the top figure, it can be noticed that there are two colors for the nodes - bright red and dark red. Bright red represents the hub nodes i.e. the nodes with higher degree and dark red represents nodes with low degree. 
+
+For figure 1(a) has 100 nodes, figure 1(b) has 400 nodes and figure 1(c) has 800 nodes. It can be noticed that in the top figures the number of bright red nodes is considerably small as compared to dark red nodes. This means there are very few hubs in the network and large number of nodes with low degree. Same results are shown by the bottom graphs as well. In the graph x-coordinate shows degree size of the nodes and y-coordinate shows number of nodes having the particular degree. Notice that, for higher degree the count of nodes are less while for smaller degree the count of nodes are higher.
+
+This proves that our proposed algorithm for generating scale-free network topology, which has been simulated in figure 1, indeed generates scale-free topology.
+
+\subsection{Robustness analysis}
+
+
+\begin{figure}[!htb]
+	\minipage{0.32\textwidth}
+	\includegraphics[width=\linewidth]{Results/100-1.png}
+	\includegraphics[width=\linewidth]{Results/100-1(B).png}
+	\begin{center}
+		(a)
+	\end{center}
+	\endminipage\hfill
+	\minipage{0.32\textwidth}
+	\includegraphics[width=\linewidth]{Results/400-1.png}
+	\includegraphics[width=\linewidth]{Results/400-1(B).png}
+	\begin{center}
+		(b)
+	\end{center}
+	\endminipage\hfill
+	\minipage{0.32\textwidth}%
+	\includegraphics[width=\linewidth]{Results/800-1.png}
+	\includegraphics[width=\linewidth]{Results/800-1(B).png}
+	\begin{center}
+		(c)
+	\end{center}
+	\endminipage
+	\caption{Scale-free properties in WSNs. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
+\end{figure}
+
+\begin{figure}[!htb]
+	\minipage{0.32\textwidth}
+	\includegraphics[width=\linewidth]{Results/100-1(G).png}
+	\begin{center}
+		(a)
+	\end{center}
+	\endminipage\hfill
+	\minipage{0.32\textwidth}
+	\includegraphics[width=\linewidth]{Results/400-1(G).png}
+	\begin{center}
+		(b)
+	\end{center}
+	\endminipage\hfill
+	\minipage{0.32\textwidth}%
+	\includegraphics[width=\linewidth]{Results/800-1(G).png}
+	\begin{center}
+		(c)
+	\end{center}
+	\endminipage
+	\caption{Robustness results. For each figure R=200, m=1, area: 500x500 (a) N=100 (b) N=400 (c) N=800}
+\end{figure}
 
 \section{Conclusion}
 
