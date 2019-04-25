@@ -21,10 +21,11 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import collections
 import operator
+import powerlaw
 
 nodes = [] #nodes list 
-D = 500 #max size of WSN deployment area
-N = 100 #number of Nodes
+D = 1000 #max size of WSN deployment area
+N = 1000 #number of Nodes
 R =  200 #Radius of transmission 
 HD = 100 #highest degree
 PTE = 0.01 #percentage of total edges 
@@ -107,7 +108,7 @@ def degreeLoglog(G,clr):
     degreeCount = collections.Counter(degree_sequence)
     deg, cnt = zip(*degreeCount.items())
     #plt.bar(deg, cnt, width=0.80, color=clr)
-    plt.loglog(deg,cnt,'-bo')
+    plt.loglog(deg,cnt,'bo')
     plt.title("Degree Histogram")
     plt.ylabel("Count")
     plt.xlabel("Degree")
@@ -263,6 +264,26 @@ def showGraph(G):
     plt.title("Scale Free WSN: Area {} X {}, Nodes: {}".format(D,D,N))
     plt.ylabel('Hubs: Red, Other: Brown')
     plt.show()
+    
+def powerlaw_gamma(g):
+    degrees = {}
+    
+    nodes = list(g.node)
+    
+    for node in nodes:
+        key = len(list(g.neighbors(node)))
+        degrees[key] = degrees.get(key, 0) + 1
+    
+    max_degree = max(degrees.keys(), key=int)
+    num_nodes = []
+    for i in range(1, max_degree + 1):
+        num_nodes.append(degrees.get(i, 0))
+    
+    fit = powerlaw.Fit(num_nodes)
+    #fit.power_law.plot_pdf( color= 'b',linestyle='--',label='fit ccdf')
+    #fit.plot_pdf( color= 'b', linestyle='-');
+    print(fit.power_law.alpha)
+    
 
 ##########################
 generateNode() #Calling function to generate nodes
@@ -286,7 +307,7 @@ showGraph(G)
 degreeHistogram(G,'brown')
 degreeLoglog(G,'g')
 #print(nx.average_shortest_path_length(G))
-
+powerlaw_gamma(G)
 
 #Robustness Analysis
 t= 0
@@ -330,5 +351,4 @@ plt.plot(diag,diag_rev,'y')
 plt.title('Robustness of Algorithm')
 plt.xlabel('Number of Random Breaks')
 plt.ylabel('Number of nodes in MCC')
-plt.show()
-    
+plt.show()   
